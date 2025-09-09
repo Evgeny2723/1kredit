@@ -1,6 +1,5 @@
-<script>
   $(document).ready(function() {
-    // Находим все числовые поля ввода
+        // Находим все числовые поля ввода
     $('input[type="number"]').on('focus', function() {
         // Когда поле в фокусе, отключаем обработчик события "wheel"
         $(this).on('wheel', function(e) {
@@ -12,9 +11,6 @@
     $('input[type="number"]').on('blur', function() {
         $(this).off('wheel');
     });
-});
-
-  $(document).ready(function() {
 
     // --- ИНИЦИАЛИЗАЦИЯ И УПРАВЛЕНИЕ ИНТЕРФЕЙСОМ ---
     flatpickr(".datepicker", {
@@ -343,9 +339,7 @@
     }
 
   });
-</script>
 
-<script>
   function handleLabel(input) {
     const parentWrapper = input.closest('.field-row');
     if (!parentWrapper) return;
@@ -393,8 +387,7 @@
       popupLinks.classList.add('visible');
     }
   });
-</script>
-<script>
+
   $(document).ready(function() {
     // Настройка масок для полей ввода телефонов
     var phoneElement = document.getElementById('ApplicationPhone');
@@ -543,4 +536,3 @@
       });
     }
   });
-</script>
