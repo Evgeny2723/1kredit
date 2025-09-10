@@ -74,7 +74,7 @@
       const payments = [{ amount: totalRepayment, days: days }];
 
       const rate = calculateRateByNewton(amount, payments);
-      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(2);
+      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(1);
 
       const overpayment = totalRepayment - amount;
 
@@ -116,7 +116,7 @@
       }
 
       const rate = calculateRateByNewton(amount, payments);
-      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(2);
+      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(1);
 
       $('#an-results').html(`
             <p>Ежемесячная выплата: <b>${totalMonthlyPayment.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
@@ -166,7 +166,7 @@
         paymentsForGesv[0].amount += commission;
       }
       const rate = calculateRateByNewton(amount, paymentsForGesv);
-      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(2);
+      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(1);
       const totalPaymentAmount = amount + totalInterest;
 
       let resultsHtml = `
@@ -296,7 +296,7 @@
       const totalPayments = irregularPayments.reduce((sum, p) => sum + p.amount, 0);
       const overpayment = totalPayments - amount;
       const rate = calculateRateByNewton(amount, payments);
-      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(2);
+      const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(1);
       $('#ir-results').html(`
             <p>Общая сумма выплат: <b>${totalPayments.toLocaleString('ru-RU')} тг.</b></p>
             <p>Сумма переплаты: <b>${overpayment.toLocaleString('ru-RU')} тг.</b></p>
