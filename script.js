@@ -93,7 +93,7 @@
       const startDateStr = $('#an-start-date').val();
       const term = parseInt($('#an-term').val()) || 0;
       const ratePercent = parseFloat($('#an-rate').val()) || 0;
-      const commission = parseFloat($('#an-commission-monthly').val()) || 0;
+      const commission = parseFloat($('#an-commission-one-time').val()) || 0;
 
       if (!amount || !term || !startDateStr) {
         $('#an-results').html('<p style="color:red;">Пожалуйста, заполните все поля: Сумма, Дата и Срок.</p>');
@@ -102,24 +102,27 @@
 
       const monthlyRate = ratePercent / 12 / 100;
       const annuityCoeff = (monthlyRate * Math.pow(1 + monthlyRate, term)) / (Math.pow(1 + monthlyRate, term) - 1);
-      const monthlyPIPayment = ratePercent > 0 ? (amount * annuityCoeff) : (amount / term);
-      const totalMonthlyPayment = monthlyPIPayment + commission;
-      const totalPayments = totalMonthlyPayment * term;
-      const totalCommissions = commission * term;
-      const totalInterest = totalPayments - totalCommissions - amount;
+      const monthlyPayment = ratePercent > 0 ? (amount * annuityCoeff) : (amount / term);
 
       const payments = [];
       const startDate = parseDate(startDateStr);
       for (let i = 0; i < term; i++) {
         let paymentDate = new Date(startDate.getFullYear(), startDate.getMonth() + i + 1, startDate.getDate());
-        payments.push({ amount: totalMonthlyPayment, days: daysBetween(startDate, paymentDate) });
+        payments.push({ amount: monthlyPayment, days: daysBetween(startDate, paymentDate) });
+      }
+
+      if (commission > 0 && payments.length > 0) {
+        payments[0].amount += commission;
       }
 
       const rate = calculateRateByNewton(amount, payments);
       const gesv = isNaN(rate) ? 'Ошибка расчета' : (100 * rate).toFixed(1);
 
+      const totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+      const totalInterest = totalPayments - commission - amount;
+
       $('#an-results').html(`
-            <p>Ежемесячная выплата: <b>${totalMonthlyPayment.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
+            <p>Ежемесячная выплата: <b>${monthlyPayment.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p>Общая сумма выплат: <b>${totalPayments.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p>Сумма переплаты (проценты): <b>${totalInterest.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p>Комиссии за весь срок: <b>${totalCommissions.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
