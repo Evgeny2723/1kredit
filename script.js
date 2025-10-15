@@ -125,7 +125,7 @@
             <p>Ежемесячная выплата: <b>${monthlyPayment.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p>Общая сумма выплат: <b>${totalPayments.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p>Сумма переплаты (проценты): <b>${totalInterest.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
-            <p>Комиссии за весь срок: <b>${totalCommissions.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
+            <p>Комиссии за весь срок: <b>${commission.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})} тг.</b></p>
             <p><b>Годовая эффективная ставка вознаграждения (ГЭСВ): ${gesv}%</b></p>
         `);
     }
