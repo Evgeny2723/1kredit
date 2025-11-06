@@ -504,6 +504,53 @@
       });
     }
 
+    // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
+  // =================================================================
+  function handleQuestionnaireSubmit(form) {
+    // Проверка reCAPTCHA (если она есть на этой форме)
+    // if (grecaptcha.getResponse().length === 0) {
+    //   alert("Пожалуйста, подтвердите, что вы не робот.");
+    //   return;
+    // }
+
+    const formData = new FormData(form);
+    const formspreeURL = 'YOUR_FORMSpree_ENDPOINT_URL'; // 👈 ВАШ URL ИЗ FORMSpree
+
+    // Находим кнопку отправки и показываем прелоадер
+    const submitButton = $(form).find('input[type="submit"]');
+    const originalButtonText = submitButton.val();
+    submitButton.val('Отправка...').prop('disabled', true);
+
+    fetch(formspreeURL, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json' // Formspree рекомендует этот заголовок
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Успешная отправка
+        window.location.href = 'https://www.1kredit.kz/thanks-page-google'; // Или другая страница "Спасибо"
+      } else {
+        // Ошибка сервера (например, Formspree)
+        response.json().then(data => {
+          console.error('Ошибка Formspree: ', data);
+          alert('Произошла ошибка при отправке. Попробуйте еще раз.');
+        });
+      }
+    })
+    .catch(error => {
+      // Ошибка сети
+      console.error('Сетевая ошибка: ', error);
+      alert('Произошла сетевая ошибка. Проверьте подключение.');
+    })
+    .finally(() => {
+      // Возвращаем кнопку в исходное состояние
+      submitButton.val(originalButtonText).prop('disabled', false);
+    });
+  }
+
     // Применяем валидацию и обработчик к каждой форме
 
     if ($('#hero-application-form').length) {
@@ -539,6 +586,40 @@
       });
     }
   });
+
+// ✅✅✅ НОВЫЙ БЛОК ВАЛИДАЦИИ ДЛЯ ФОРМЫ С ФАЙЛОМ ✅✅✅
+  // =================================================================
+  if ($('#questionnaire-form').length) {
+    $("#questionnaire-form").validate({
+      rules: {
+        // Добавьте сюда правила для других полей в этой форме
+        fullname: { required: true },
+        ApplicationPhone: { required: true, phoneComplete: true },
+        'cv-file': { required: true }, // 'cv-file' - это 'name' вашего <input type="file">
+        CheckboxData: { required: true }
+      },
+      messages: {
+        fullname: { required: "Укажите ваше ФИО" },
+        ApplicationPhone: { required: "Заполните поле!", phoneComplete: "Введите полный номер телефона" },
+        'cv-file': { required: "Пожалуйста, прикрепите ваш файл резюме" },
+        CheckboxData: { required: "Необходимо ваше согласие" }
+      },
+      errorPlacement: function(error, element) {
+        if (element.attr("name") == "cv-file") {
+          // Помещаем ошибку для файла после всего блока загрузчика
+          error.appendTo(element.closest(".file-uploader-wrapper").parent());
+        } else if (element.attr("name") == "CheckboxData") {
+           error.appendTo(element.closest(".w-checkbox"));
+        } else {
+          // Стандартное размещение
+          error.appendTo(element.closest(".field-row"));
+        }
+      },
+      highlight: function(element) { $(element).css('border', '1px solid #c50006'); },
+      unhighlight: function(element) { $(element).css('border', ''); },
+      submitHandler: handleQuestionnaireSubmit // 👈 Использует НОВЫЙ обработчик
+    });
+  }
 
 // Этот код можно добавить в самый конец вашего <script> тега, 
 // но ВНЕ блока $(document).ready()
