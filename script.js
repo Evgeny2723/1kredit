@@ -507,14 +507,14 @@
     // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
   // =================================================================
   function handleQuestionnaireSubmit(form) {
-    // Проверка reCAPTCHA (если она есть на этой форме)
-    // if (grecaptcha.getResponse().length === 0) {
-    //   alert("Пожалуйста, подтвердите, что вы не робот.");
-    //   return;
-    // }
+     Проверка reCAPTCHA (если она есть на этой форме)
+     if (grecaptcha.getResponse().length === 0) {
+       alert("Пожалуйста, подтвердите, что вы не робот.");
+       return;
+     }
 
     const formData = new FormData(form);
-    const formspreeURL = 'YOUR_FORMSpree_ENDPOINT_URL'; // 👈 ВАШ URL ИЗ FORMSpree
+    const formspreeURL = 'https://formspree.io/f/mvgvevpl'; // 👈 ВАШ URL ИЗ FORMSpree
 
     // Находим кнопку отправки и показываем прелоадер
     const submitButton = $(form).find('input[type="submit"]');
