@@ -1,4 +1,11 @@
   $(document).ready(function() {
+      const upload = Upload({ apiKey: "free" });
+  document.getElementById('file-upload').onchange = async (e) => {
+    const file = e.target.files[0];
+    const { fileUrl } = await upload.uploadFile(file);
+    // Дальше отправляйте fileUrl как часть вашей формы
+  };
+    
         // Находим все числовые поля ввода
     $('input[type="number"]').on('focus', function() {
         // Когда поле в фокусе, отключаем обработчик события "wheel"
