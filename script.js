@@ -1,10 +1,22 @@
   $(document).ready(function() {
-      const upload = Upload({ apiKey: "free" });
-  document.getElementById('file-upload').onchange = async (e) => {
-    const file = e.target.files[0];
-    const { fileUrl } = await upload.uploadFile(file);
-    // Дальше отправляйте fileUrl как часть вашей формы
-  };
+        const uploadManager = new Bytescale.UploadManager({
+    apiKey: "free" // или возьмите персональный публичный ключ на bytescale.com/get-started
+  });
+
+  const onFileSelected = async event => {
+    const file = event.target.files[0];
+
+    try {
+      const { fileUrl, filePath } = await uploadManager.upload({ data: file });
+
+      // !!! Сюда добавить отправку fileUrl в скрытое поле вашей формы:
+      document.querySelector('input[name="uploaded-file-url"]').value = fileUrl;
+
+      alert(`File uploaded:\n${fileUrl}`);
+    } catch (e) {
+      alert(`Error:\n${e.message}`);
+    }
+  }
     
         // Находим все числовые поля ввода
     $('input[type="number"]').on('focus', function() {
