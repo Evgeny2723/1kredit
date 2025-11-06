@@ -1,23 +1,4 @@
   $(document).ready(function() {
-        const uploadManager = new Bytescale.UploadManager({
-    apiKey: "free" // или возьмите персональный публичный ключ на bytescale.com/get-started
-  });
-
-  const onFileSelected = async event => {
-    const file = event.target.files[0];
-
-    try {
-      const { fileUrl, filePath } = await uploadManager.upload({ data: file });
-
-      // !!! Сюда добавить отправку fileUrl в скрытое поле вашей формы:
-      document.querySelector('input[name="uploaded-file-url"]').value = fileUrl;
-
-      alert(`File uploaded:\n${fileUrl}`);
-    } catch (e) {
-      alert(`Error:\n${e.message}`);
-    }
-  }
-    
         // Находим все числовые поля ввода
     $('input[type="number"]').on('focus', function() {
         // Когда поле в фокусе, отключаем обработчик события "wheel"
@@ -558,3 +539,42 @@
       });
     }
   });
+
+// Этот код можно добавить в самый конец вашего <script> тега, 
+// но ВНЕ блока $(document).ready()
+document.addEventListener('DOMContentLoaded', function() {
+  const fileInput = document.getElementById('cv-file');
+  const fileDisplayArea = document.getElementById('file-display-area');
+  const fileUploadLabel = document.querySelector('.file-upload-label');
+
+  if (!fileInput) return; // Выход, если элемента нет на странице
+
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files.length > 0) {
+      const file = this.files[0];
+      const fileSize = (file.size / 1024 / 1024).toFixed(2); // в МБ
+      
+      // Показываем карточку файла
+      fileDisplayArea.innerHTML = `
+        <div class="file-display-card">
+          <div class="file-info">
+            <div class="file-icon">✓</div>
+            <span class="file-name">${file.name}</span>
+            <span class="file-size">${fileSize} MB</span>
+          </div>
+          <button type="button" class="file-remove-btn" id="remove-file-btn">&times;</button>
+        </div>
+      `;
+      
+      // Прячем кнопку "Выберите файл"
+      fileUploadLabel.style.display = 'none';
+      
+      // Добавляем обработчик на кнопку "удалить"
+      document.getElementById('remove-file-btn').addEventListener('click', function() {
+        fileInput.value = ''; // Очищаем инпут
+        fileDisplayArea.innerHTML = ''; // Убираем карточку
+        fileUploadLabel.style.display = 'block'; // Показываем кнопку "Выберите файл"
+      });
+    }
+  });
+});
