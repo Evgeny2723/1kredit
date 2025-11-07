@@ -539,7 +539,11 @@ document.addEventListener('DOMContentLoaded', function() {
       fileDisplayArea.innerHTML = `
         <div class="file-display-card">
           <div class="file-info">
-            <div class="file-icon">✓</div>
+            <div class="file-icon">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3.70223 9.44296C3.32457 9.44296 3.01439 9.27882 2.73335 8.91462L0.271809 5.92028C0.0922115 5.69048 0 5.45862 0 5.20413C0 4.69242 0.405797 4.27739 0.91566 4.27739C1.23408 4.27739 1.47495 4.38411 1.7333 4.71556L3.66932 7.17368L7.82277 0.523526C8.04075 0.1806 8.3254 0 8.63355 0C9.13523 0 9.59586 0.35196 9.59586 0.878297C9.59586 1.11013 9.47432 1.35562 9.33392 1.58644L4.63463 8.90742C4.4038 9.25876 4.07809 9.44296 3.70223 9.44296Z" fill="white" />
+</svg>
+            </div>
             <span class="file-name">${file.name}</span>
             <span class="file-size">${fileSize} MB</span>
           </div>
