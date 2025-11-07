@@ -420,51 +420,42 @@ $(document).ready(function() {
   }
 
   // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
-// =================================================================
-function handleQuestionnaireSubmit(form) {
-  
-   if (grecaptcha.getResponse().length === 0) {
-     alert("Пожалуйста, подтвердите, что вы не робот.");
-     return;
-   }
-
-  const formData = new FormData(form);
-  const formspreeURL = 'https://formspree.io/f/mvgvevpl'; // 👈 ВАШ URL ИЗ FORMSpree
-
-  // Находим кнопку отправки и показываем прелоадер
-  const submitButton = $(form).find('input[type="submit"], button[type="submit"]');
-  const originalButtonText = submitButton.is('input') ? submitButton.val() : submitButton.text();
-  submitButton.val('Отправка...').text('Отправка...').prop('disabled', true);
-
-  fetch(formspreeURL, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'Accept': 'application/json' // Formspree рекомендует этот заголовок
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      // Успешная отправка
-      window.location.href = 'https://www.1kredit.kz/thanks-page-google'; // Или другая страница "Спасибо"
-    } else {
-      // Ошибка сервера (например, Formspree)
-      response.json().then(data => {
-        console.error('Ошибка Formspree: ', data);
-        alert('Произошла ошибка при отправке. Попробуйте еще раз.');
-      });
-    }
-  })
-  .catch(error => {
-    // Ошибка сети
-    console.error('Сетевая ошибка: ', error);
-    alert('Произошла сетевая ошибка. Проверьте подключение.');
-  })
-  .finally(() => {
-    // Возвращаем кнопку в исходное состояние
-    submitButton.val(originalButtonText).text(originalButtonText).prop('disabled', false);
-  });
-}
+  // =================================================================
+  function handleQuestionnaireSubmit(form) {
+     if (grecaptcha.getResponse().length === 0) {
+       alert("Пожалуйста, подтвердите, что вы не робот.");
+       return;
+     }
+    const formData = new FormData(form);
+    const formspreeURL = 'https://formspree.io/f/mvgvevpl';
+    const submitButton = $(form).find('input[type="submit"]');
+    const originalButtonText = submitButton.val();
+    submitButton.val('Отправка...').prop('disabled', true);
+    fetch(formspreeURL, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = 'https://www.1kredit.kz/thanks-page-google';
+      } else {
+        response.json().then(data => {
+          console.error('Ошибка Formspree: ', data);
+          alert('Произошла ошибка при отправке. Попробуйте еще раз.');
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Сетевая ошибка: ', error);
+      alert('Произошла сетевая ошибка. Проверьте подключение.');
+    })
+    .finally(() => {
+      submitButton.val(originalButtonText).prop('disabled', false);
+    });
+  }
 
   if ($('#hero-application-form').length) {
     $("#hero-application-form").validate({
