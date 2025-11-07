@@ -435,7 +435,6 @@ function handleQuestionnaireSubmit(form) {
   fetch(formspreeURL, {
     method: 'POST',
     body: formData,
-    enctype:'multipart/form-data'
     headers: {
       'Accept': 'application/json'
     }
