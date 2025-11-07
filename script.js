@@ -419,34 +419,36 @@ $(document).ready(function() {
     });
   }
 
-  // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
+  // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (ДЛЯ GETFORM) ✅✅✅
 // =================================================================
 function handleQuestionnaireSubmit(form) {
   
+  // 1. Проверка reCAPTCHA
   if (grecaptcha.getResponse().length === 0) {
     alert("Пожалуйста, подтвердите, что вы не робот.");
-    return;
+    return; // Останавливаем отправку, если капча не пройдена
   }
 
   const formData = new FormData(form);
-  const formspreeURL = 'https://formspree.io/f/mvgvevpl';
+  
+  // 2. ВАШ НОВЫЙ URL ИЗ GETFORM.IO
+  const getformURL = 'https://getform.io/f/aejekwjb'; 
 
-
-  fetch(formspreeURL, {
+  fetch(getformURL, {
     method: 'POST',
-    body: formData,
+    body: formData, // FormData автоматически обработает файл
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json' // Getform рекомендует этот заголовок
     }
   })
   .then(response => {
     if (response.ok) {
       // Успешная отправка
-      window.location.href = 'https://www.1kredit.kz/thanks-page-google'; // Или другая страница "Спасибо"
+      window.location.href = 'https://www.1kredit.kz/thanks-page-google'; // Ваша страница "Спасибо"
     } else {
-      // Ошибка сервера (например, Formspree)
+      // Ошибка сервера (например, Getform)
       response.json().then(data => {
-        console.error('Ошибка Formspree: ', data);
+        console.error('Ошибка Getform: ', data);
         alert('Произошла ошибка при отправке. Попробуйте еще раз.');
       });
     }
