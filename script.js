@@ -622,6 +622,7 @@
 
 // Этот код можно добавить в самый конец вашего <script> тега, 
 // но ВНЕ блока $(document).ready()
+document.addEventListener('DOMContentLoaded', function() {
 console.log('DOM Загружен. Ищем элементы загрузчика...');
 
   const fileInput = document.getElementById('cv-file');
