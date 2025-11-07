@@ -507,7 +507,6 @@
     // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
   // =================================================================
   function handleQuestionnaireSubmit(form) {
-     Проверка reCAPTCHA (если она есть на этой форме)
      if (grecaptcha.getResponse().length === 0) {
        alert("Пожалуйста, подтвердите, что вы не робот.");
        return;
@@ -623,18 +622,36 @@
 
 // Этот код можно добавить в самый конец вашего <script> тега, 
 // но ВНЕ блока $(document).ready()
-document.addEventListener('DOMContentLoaded', function() {
+console.log('DOM Загружен. Ищем элементы загрузчика...');
+
   const fileInput = document.getElementById('cv-file');
   const fileDisplayArea = document.getElementById('file-display-area');
   const fileUploadLabel = document.querySelector('.file-upload-label');
 
-  if (!fileInput) return; // Выход, если элемента нет на странице
+  // Проверка, найдены ли элементы
+  if (!fileInput) {
+    console.error('ОШИБКА: Не могу найти <input id="cv-file">. Проверьте HTML Embed.');
+    return; // Останавливаем выполнение, если главного элемента нет
+  }
+  if (!fileDisplayArea) {
+    console.warn('ПРЕДУПРЕЖДЕНИЕ: Не найден <div id="file-display-area">.');
+  }
+  if (!fileUploadLabel) {
+    console.warn('ПРЕДУПРЕЖДЕНИЕ: Не найдена <label class="file-upload-label">.');
+  }
 
+  console.log('Элементы найдены. Добавляю слушатель "change" на fileInput...');
+
+  // Добавляем слушатель
   fileInput.addEventListener('change', function() {
+    
+    console.log('Событие "change" СРАБОТАЛО!'); // 👈 Это должно появиться при выборе файла
+
     if (this.files && this.files.length > 0) {
       const file = this.files[0];
+      console.log('Выбран файл:', file.name);
       const fileSize = (file.size / 1024 / 1024).toFixed(2); // в МБ
-      
+
       // Показываем карточку файла
       fileDisplayArea.innerHTML = `
         <div class="file-display-card">
@@ -646,16 +663,21 @@ document.addEventListener('DOMContentLoaded', function() {
           <button type="button" class="file-remove-btn" id="remove-file-btn">&times;</button>
         </div>
       `;
-      
+      console.log('Карточка файла отображена.');
+
       // Прячем кнопку "Выберите файл"
       fileUploadLabel.style.display = 'none';
-      
+      console.log('Кнопка "Выберите файл" скрыта.');
+
       // Добавляем обработчик на кнопку "удалить"
       document.getElementById('remove-file-btn').addEventListener('click', function() {
         fileInput.value = ''; // Очищаем инпут
         fileDisplayArea.innerHTML = ''; // Убираем карточку
         fileUploadLabel.style.display = 'block'; // Показываем кнопку "Выберите файл"
+        console.log('Файл удален.');
       });
+    } else {
+      console.log('Событие "change" сработало, но массив files пустой.');
     }
   });
 });
