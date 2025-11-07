@@ -419,44 +419,6 @@ $(document).ready(function() {
     });
   }
 
-  // ✅✅✅ НОВАЯ ФУНКЦИЯ ДЛЯ ФОРМЫ С ФАЙЛОМ (АНКЕТА) ✅✅✅
-  // =================================================================
-  function handleQuestionnaireSubmit(form) {
-     if (grecaptcha.getResponse().length === 0) {
-       alert("Пожалуйста, подтвердите, что вы не робот.");
-       return;
-     }
-    const formData = new FormData(form);
-    const formspreeURL = 'https://formspree.io/f/mvgvevpl';
-    const submitButton = $(form).find('input[type="submit"]');
-    const originalButtonText = submitButton.val();
-    submitButton.val('Отправка...').prop('disabled', true);
-    fetch(formspreeURL, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = 'https://www.1kredit.kz/thanks-page-google';
-      } else {
-        response.json().then(data => {
-          console.error('Ошибка Formspree: ', data);
-          alert('Произошла ошибка при отправке. Попробуйте еще раз.');
-        });
-      }
-    })
-    .catch(error => {
-      console.error('Сетевая ошибка: ', error);
-      alert('Произошла сетевая ошибка. Проверьте подключение.');
-    })
-    .finally(() => {
-      submitButton.val(originalButtonText).prop('disabled', false);
-    });
-  }
-
   if ($('#hero-application-form').length) {
     $("#hero-application-form").validate({
       rules: { 'tip-zaloga': { required: true, validProperty: true }, fullname: { required: true }, ApplicationPhone: { required: true, phoneComplete: true }, iin: { required: true, maxlength: 12 }, ApplicationEmail: { required: true, email: true }, CheckboxData: { required: true } },
@@ -519,7 +481,6 @@ $(document).ready(function() {
       },
       highlight: function(element) { $(element).css('border', '1px solid #c50006'); },
       unhighlight: function(element) { $(element).css('border', ''); },
-      submitHandler: handleQuestionnaireSubmit
     });
   }
 
