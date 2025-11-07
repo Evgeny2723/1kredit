@@ -452,7 +452,7 @@ $(document).ready(function() {
     });
   }
 
-  <!-- // ✅✅✅ НОВЫЙ БЛОК ВАЛИДАЦИИ ДЛЯ ФОРМЫ С ФАЙЛОМ ✅✅✅
+   // ✅✅✅ НОВЫЙ БЛОК ВАЛИДАЦИИ ДЛЯ ФОРМЫ С ФАЙЛОМ ✅✅✅
   // =================================================================
   if ($('#questionnaire-form').length) {
     $("#questionnaire-form").validate({
@@ -482,7 +482,7 @@ $(document).ready(function() {
       highlight: function(element) { $(element).css('border', '1px solid #c50006'); },
       unhighlight: function(element) { $(element).css('border', ''); },
     });
-  } -->
+  }
 
 });
 
