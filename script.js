@@ -396,7 +396,7 @@ $(document).ready(function() {
     if (managerTags.length > 0) {
       message += `\n🗣️ Менеджеры: ${managerTags.join(', ')}`;
     }
-    const telegramToken = '7262273320:AAFokj1ZYaZImTX-J12HfyVZhonsEGJPaO0';
+    const telegramToken = '7262273320:AAHeuZUCcrI7WKuZF-EurQlflMfMf0qPCKg';
     const chatId = '-1002345970825';
     const url = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
     fetch(url, {
